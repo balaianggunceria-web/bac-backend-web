@@ -40,7 +40,7 @@ class productController{
                 description: description.trim(),
                 stock: parseInt(stock),
                 price: parseInt(price),
-                discount: parseInt(discount),
+                discount: Number(discount.trim()),
                 images: allImageUrl,
                 brand: brand.trim()
 
