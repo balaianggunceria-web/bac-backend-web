@@ -116,13 +116,18 @@ class productController{
       };
     // end method
     getDiscountProducts = async (req, res) => {
+        const { id } = req; 
         try {
-          const products = await productModel.find({ discount: { $gt: 0 } }).sort({ createdAt: -1 });
+          const products = await productModel.find({
+            sellerId: id,
+            discount: { $gt: 0 }
+          }).sort({ createdAt: -1 });
+      
           res.status(200).json({ products });
         } catch (error) {
           res.status(500).json({ message: error.message });
         }
-      };
+      };      
     // end method
     product_image_update = async (req,res) => {
         const form = formidable({multiples: true})

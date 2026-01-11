@@ -9,7 +9,7 @@ router.post('/product-update',authMiddleware,productController.product_update)
 router.post('/product-image-update',authMiddleware,productController.product_image_update)
 router.delete('/product/:id', productController.deleteProduct);
 
-router.get('/discount-products', productController.getDiscountProducts);
+router.get('/discount-products',authMiddleware,productController.getDiscountProducts);
 
 
 module.exports = router 
