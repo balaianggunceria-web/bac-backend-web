@@ -11,7 +11,7 @@ const http = require('http')
 const server = http.createServer(app)
 
 const allowedOrigins = process.env.mode === 'pro'
-? [process.env.client_customer_production_url, process.env.client_admin_production_url]
+? [process.env.client_customer_production_url, process.env.client_admin_production_url].filter(Boolean)
 : ['http://localhost:3000', 'http://localhost:3001'];
 
 app.use(cors({
@@ -34,27 +34,28 @@ cors: {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST"]
 }
 });
 
-var allCustomer = []
-var allSeller = []
-let admin = {}
+var allCustomer = [];
+var allSeller = [];
+let admin = {};
 
 const addUser = (customerId,socketId,userInfo) => {
-    const checkUser = allCustomer.some(u => u.customerId === customerId)
+    const checkUser = allCustomer.some((u) => u.customerId === customerId);
     if (!checkUser) {
         allCustomer.push({
             customerId,
             socketId,
             userInfo
-        })
+        });
     }
 } 
 
 const addSeller = (sellerId,socketId,userInfo) => {
-    const checkSeller = allSeller.some(u => u.sellerId === sellerId)
+    const checkSeller = allSeller.some((u) => u.sellerId === sellerId)
     if (!checkSeller) {
         allSeller.push({
             sellerId,
@@ -95,13 +96,13 @@ io.on('connection', (soc) => {
         }
     })
     soc.on('send_customer_message',(msg) => {
-        const seller = findSeller(msg.receverId)
+        const seller = findSeller(msg.receiverId)
         if (seller !== undefined) {
             soc.to(seller.socketId).emit('customer_message', msg)
         }
     })
     soc.on('send_message_admin_to_seller',(msg) => {
-        const seller = findSeller(msg.receverId)
+        const seller = findSeller(msg.receiverId)
         if (seller !== undefined) {
             soc.to(seller.socketId).emit('receved_admin_message', msg)
         }
