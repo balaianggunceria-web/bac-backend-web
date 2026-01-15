@@ -10,7 +10,7 @@ const socket = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 
-const allowedOrigins = process.env.MODE === 'pro'
+const allowedOrigins = process.env.mode === 'pro'
 ? ['https://bac-customer-web.vercel.app', 'https://bac-dashboard-web.vercel.app']
 : ['http://localhost:3000', 'http://localhost:3001'];
 
