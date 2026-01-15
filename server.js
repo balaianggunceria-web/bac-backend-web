@@ -10,7 +10,7 @@ const socket = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 
-const allowedOrigins = process.env.mode === 'pro'
+const allowedOrigins = process.env.MODE === 'pro'
 ? ['https://bac-customer-web.vercel.app', 'https://bac-dashboard-web.vercel.app']
 : ['http://localhost:3000', 'http://localhost:3001'];
 
@@ -31,6 +31,7 @@ const io = socket(server, {
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
             } else {
+                console.log('Blocked origin:', origin);
                 callback(new Error('Not allowed by CORS'));
             }
         },
